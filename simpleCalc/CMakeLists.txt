@@ -3,6 +3,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(simpleCalc)
 
-add_executable(simpleCalc src/main.cpp)
+add_executable(simpleCalc src/main.cpp src/calc.cpp)
 
 include_directories(include)
