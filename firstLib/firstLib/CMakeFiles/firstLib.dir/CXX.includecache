@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/student/usun/JiPP2/firstLib/firstLib/src/lib.cpp
+lib.h
+/home/student/usun/JiPP2/firstLib/firstLib/src/lib.h
+
+firstLib/include/lib.h
+iostream
+-
+

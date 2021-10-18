@@ -1,0 +1,3 @@
+/home/student/usun/JiPP2/firstLib/CMakeFiles/rebuild_cache.dir
+/home/student/usun/JiPP2/firstLib/CMakeFiles/firstLib.dir
+/home/student/usun/JiPP2/firstLib/CMakeFiles/edit_cache.dir
