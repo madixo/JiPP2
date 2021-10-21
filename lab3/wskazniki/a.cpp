@@ -24,7 +24,7 @@ void swap(int *a, int *b) {
 
     int temp = *a;
     *a = *b;
-    *b = *a;
+    *b = temp;
 
 }
 
@@ -34,7 +34,7 @@ void sort(int *a, int *b, int *c) {
 
     if(*b > *a) swap(a, b);
 
-    if(*b > *c) swap(b, c);
+    if(*c > *b) swap(b, c);
 
 }
 
@@ -93,7 +93,7 @@ int main() {
 
     cin >> a;
 
-    cout << "Wartosc wartosc b = " << b << '\n';
+    cout << "Wartosc poczatkowa b = " << b << '\n';
 
     insert(a, &b);
 
