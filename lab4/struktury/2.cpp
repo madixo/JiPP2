@@ -26,7 +26,7 @@ int int_len(int x) {
 
 len max_len(samochod s[], int n) {
 
-    len l = {0, 0, 0};
+    len l = {0, 0, 0, 0};
     int len;
 
     for(int i = 0; i < n; i++) {
