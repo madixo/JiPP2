@@ -44,7 +44,7 @@ len max_len(samochod s[], int n) {
 
 void wyswietl(samochod *samochody, int n) {
 
-    len l = max_len(samochody, 4);
+    len l = max_len(samochody, n);
 
     cout << left << setw(l.marka) << "Marka" << '|' << left << setw(l.model) << "Model" << '|' << left << setw(l.moc + 2) << "Moc" << '|' << left << setw(5) << "Rok" << '|' << left << setw(l.kolor) << "Kolor" << '\n';
 
@@ -58,9 +58,11 @@ void wyswietl(samochod *samochody, int n) {
 
 int main() {
 
-    samochod samochody[4] = {{"audi", "rs4", 380, 2000, "bialy"}, {"volkswagen", "golf mk2", 89, 1990, "czarny"}, {"porsche", "918 spyder", 875, 2015, "srebrny"}, {"fiat", "126p", 23, 1975, "czerwony"}};
+    samochod samochody[] = {{"audi", "rs4", 380, 2000, "bialy"}, {"volkswagen", "golf mk2", 89, 1990, "czarny"}, {"porsche", "918 spyder", 875, 2015, "srebrny"}, {"fiat", "126p", 23, 1975, "czerwony"}};
 
-    wyswietl(samochody, 4);    
+    int n = sizeof(samochody) / sizeof(samochod);
+
+    wyswietl(samochody, n);
 
     return 0;
 
