@@ -739,25 +739,24 @@ int main(int argc, char** argv) {
                 if(isInt) {
 
                     cout << "Wprowadz macierz\n";
-                    int **A = inputIntMatrix(rows, cols),
-                        **B = sortRowsInMatrix(A, rows, cols);
+                    int **A = inputIntMatrix(rows, cols);
 
                     cout << "Macierz\n";
 
                     showMatrix(A, rows, cols);
 
                     cout << "\npo posortowaniu\n";
+                    
+                    sortRowsInMatrix(A, rows, cols);
 
-                    showMatrix(B, rows, cols);
+                    showMatrix(A, rows, cols);
 
                     deallocMatrix(A, rows);
-                    deallocMatrix(B, rows);
 
                 }else {
 
                     cout << "Wprowadz macierz\n";
-                    double **A = inputDoubleMatrix(rows, cols),
-                        **B = sortRowsInMatrix(A, rows, cols);
+                    double **A = inputDoubleMatrix(rows, cols);
 
                     cout << "Macierz\n";
 
@@ -765,10 +764,11 @@ int main(int argc, char** argv) {
 
                     cout << "\npo posortowaniu\n";
 
-                    showMatrix(B, rows, cols);
+                    sortRowsInMatrix(A, rows, cols);
+
+                    showMatrix(A, rows, cols);
 
                     deallocMatrix(A, rows);
-                    deallocMatrix(B, rows);
 
                 }
 
