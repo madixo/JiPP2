@@ -1,6 +1,10 @@
+#include <iostream>
+
 #include "lib.h"
 
-void itIsWork() {
+using namespace std;
+
+void isItWork() {
 
     cout << "Yes it work!\n";
 

@@ -1,8 +1,0 @@
-/home/student/usun/JiPP2/firstLib/CMakeFiles/rebuild_cache.dir
-/home/student/usun/JiPP2/firstLib/CMakeFiles/edit_cache.dir
-/home/student/usun/JiPP2/firstLib/firstLib/CMakeFiles/rebuild_cache.dir
-/home/student/usun/JiPP2/firstLib/firstLib/CMakeFiles/firstLib.dir
-/home/student/usun/JiPP2/firstLib/firstLib/CMakeFiles/edit_cache.dir
-/home/student/usun/JiPP2/firstLib/firstLibCall/CMakeFiles/rebuild_cache.dir
-/home/student/usun/JiPP2/firstLib/firstLibCall/CMakeFiles/firstLibCall.dir
-/home/student/usun/JiPP2/firstLib/firstLibCall/CMakeFiles/edit_cache.dir
