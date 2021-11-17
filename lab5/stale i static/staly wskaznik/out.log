@@ -1,0 +1,4 @@
+a.cpp: In function ‘int main()’:
+a.cpp:9:9: error: assignment of read-only variable ‘wsk’
+    9 |     wsk = &b;
+      |     ~~~~^~~~

@@ -1,0 +1,4 @@
+a.cpp: In function ‘int main()’:
+a.cpp:10:8: error: assignment of read-only location ‘* p’
+   10 |     *p = 555;
+      |     ~~~^~~~~

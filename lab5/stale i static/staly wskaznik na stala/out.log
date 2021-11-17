@@ -1,0 +1,7 @@
+a.cpp: In function ‘int main()’:
+a.cpp:10:8: error: assignment of read-only location ‘*(const int*)p’
+   10 |     *p = 55;
+      |     ~~~^~~~
+a.cpp:12:7: error: assignment of read-only variable ‘p’
+   12 |     p = &b;
+      |     ~~^~~~
