@@ -202,7 +202,7 @@ void user_input(const string& message, T* A, int n) {
     cout << message;
 
     for(int i = 0; i < n; i++)
-        A[i] = validate_user_input<T>();
+        A[i] = validate_user_input<T>('\n');
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -295,9 +295,10 @@ void operation(int argc, char** argv) {
 
     if(op != Operation::MULTIPLY) {
 
-        for(int i = 0; i < n; i++) {
-
+        for(int i = 0; i < n; i++)
             M[i] = inputMatrix<T>(rows, cols);
+
+        for(int i = 0; i < n; i++) {
 
             ostringstream ss;
             ss << "Macierz " << i << ":\n";
@@ -305,7 +306,7 @@ void operation(int argc, char** argv) {
             cout << ss.str();
             showMatrix(M[i], rows, cols);
             cout << '\n';
-
+            
         }
 
     }
