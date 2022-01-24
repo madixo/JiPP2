@@ -369,29 +369,52 @@ double** transpozeMatrix(double **A, int rows, int cols) {
 
 }
 
-int** powerMatrix(int **A, int rows, int cols, unsigned int n) {
+int** cp(int **A, int rows, int cols) {
+
+    int **out = allocIntMatrix(rows, cols);
+
+    for(int i = 0; i < rows; i++)
+        for(int j = 0; j < cols; j++)
+            out[i][j] = A[i][j];
+
+    return out;
+
+}
+
+double** cp(double **A, int rows, int cols) {
+
+    double **out = allocDoubleMatrix(rows, cols);
+
+    for(int i = 0; i < rows; i++)
+        for(int j = 0; j < cols; j++)
+            out[i][j] = A[i][j];
+
+    return out;
+
+}
+
+int** powerMatrix(int **IN, int rows, int cols, unsigned int n) {
 
     if(rows != cols) throw "Macierz musi byc kwadratowa!";
 
-    int **W = identityIntMatrix(rows, rows), **V;
+    int **W = identityIntMatrix(rows, rows), **P, **A = cp(IN, rows, cols);
 
     while(n > 0) {
 
-        if(!(n & 1)) {
+        if(n & 1) {
 
-            V = multiplyMatrix(A, W, rows, rows, rows);
+            P = multiplyMatrix(W, A, rows, rows, rows);
             deallocMatrix(W, rows);
-            W = V;
+            W = P;
 
         }
 
-        if(n >>= 1) {
 
-            V = multiplyMatrix(W, W, rows, rows, rows);
-            deallocMatrix(W, rows);
-            W = V;
+        if(!(n >>= 1)) break;
 
-        }
+        P = multiplyMatrix(A, A, rows, rows, rows);
+        deallocMatrix(A, rows);
+        A = P;
 
     }
 
@@ -399,29 +422,28 @@ int** powerMatrix(int **A, int rows, int cols, unsigned int n) {
 
 }
 
-double** powerMatrix(double **A, int rows, int cols, unsigned int n) {
+double** powerMatrix(double **IN, int rows, int cols, unsigned int n) {
 
     if(rows != cols) throw "Macierz musi byc kwadratowa!";
 
-    double **W = identityDoubleMatrix(rows, rows), **V;
+    double **W = identityDoubleMatrix(rows, rows), **P, **A = cp(IN, rows, cols);
 
     while(n > 0) {
 
-        if(!(n & 1)) {
+        if(n & 1) {
 
-            V = multiplyMatrix(A, W, rows, rows, rows);
+            P = multiplyMatrix(W, A, rows, rows, rows);
             deallocMatrix(W, rows);
-            W = V;
+            W = P;
 
         }
 
-        if(n >>= 1) {
 
-            V = multiplyMatrix(W, W, rows, rows, rows);
-            deallocMatrix(W, rows);
-            W = V;
+        if(!(n >>= 1)) break;
 
-        }
+        P = multiplyMatrix(A, A, rows, rows, rows);
+        deallocMatrix(A, rows);
+        A = P;
 
     }
 
@@ -511,10 +533,17 @@ bool matrixIsDiagonal(int **A, int rows, int cols) {
 
     if(rows == 1) return true;
 
-    for(int i = 0; i < rows; i++)
-        for(int j = 0; j < cols; j++)
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < cols; j++) {
             if(i != j && A[i][j] != 0)
                 return false;
+
+            if(i == j && A[i][j] == 0)
+                return false;
+
+        }
+
+    }
 
     return true;
 
@@ -526,10 +555,16 @@ bool matrixIsDiagonal(double **A, int rows, int cols) {
 
     if(rows == 1) return true;
 
-    for(int i = 0; i < rows; i++)
-        for(int j = 0; j < cols; j++)
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < cols; j++) {
             if(i != j && A[i][j] != 0)
                 return false;
+
+            if(i == j && A[i][j] == 0)
+                return false;
+        }
+
+    }
 
     return true;
 

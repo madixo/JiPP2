@@ -166,7 +166,7 @@ Dostepne operacje:
 }
 
 template<typename T>
-T validate_user_input(int delimiter = ' ') {
+T validate_user_input(int delimiter = '\n') {
 
     T in;
 
@@ -202,7 +202,7 @@ void user_input(const string& message, T* A, int n) {
     cout << message;
 
     for(int i = 0; i < n; i++)
-        A[i] = validate_user_input<T>('\n');
+        A[i] = validate_user_input<T>();
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -255,6 +255,10 @@ vector<T> parse_args(Operation op, int argc, char** argv) {
         }
 
     }
+
+    for(int i = 0; i < args.size(); i++)
+        cout << args[i] << " ";
+    cout << endl;
 
     return args;
 
@@ -454,8 +458,9 @@ void operation(int argc, char** argv) {
 
     }
 
-    for(int i = 0; i < n; i++)
-        deallocMatrix(M[i], args.at(0));
+    if(op != Operation::MULTIPLY)
+        for(int i = 0; i < n; i++)
+            deallocMatrix(M[i], args.at(0));
     
     delete[] M;
 
