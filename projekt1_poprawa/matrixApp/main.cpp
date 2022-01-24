@@ -1,36 +1,78 @@
 #include "lib.hpp"
 
 #include <iostream>
+#include <sstream>
 #include <unordered_map>
 #include <vector>
+#include <limits>
+#include <functional>
 using namespace std;
-
-bool err;
 
 enum class Reason {
 
-    BADARGNUM,
     BADARG,
+    BADARGNUM,
     BADOPERATION,
     BADTYPE
 
 };
 
+unordered_map<Reason, string> error_messages{
+    {Reason::BADARG, "Podano zle argumenty!\n"},
+    {Reason::BADARGNUM, "Podano zla ilosc argumentow!\n"},
+    {Reason::BADOPERATION, "Podano zla operacje!\n"},
+    {Reason::BADTYPE, "Podano zly typ danych!\n"}
+};
+
+void show_error(Reason reason) {
+
+    try {
+
+        cout << error_messages.at(reason);
+
+    }catch(out_of_range& e) {
+
+        cout << "Nie znaleziono wiadomosci (PANIC)!\n";
+
+    }
+
+    cout << "Wpisz ./matrixApp help aby otrzymac pomoc!" << endl;
+
+    exit(1);
+
+}
+
 enum class Type {
 
+    DUMMY,
     INT,
     DOUBLE
 
 };
 
-enum class OperationType {
+unordered_map<string, Type> str_type{
+    {"int", Type::INT},
+    {"double", Type::DOUBLE}
+};
+
+Type get_type(const string& type) {
+
+    try {
+
+        return str_type.at(type);
+
+    }catch(out_of_range& e) {
+
+        show_error(Reason::BADTYPE);
+        return Type::DUMMY;
+
+    }
+
+}
+
+enum class Operation {
 
     DUMMY,
-    ALLOC,
-    DEALLOC,
-    IDENTITY,
-    SHOW,
-    INPUT,
     ADD,
     SUBTRACT,
     MULTIPLY,
@@ -44,37 +86,58 @@ enum class OperationType {
 
 };
 
-unordered_map<string, OperationType> str_ops{
-    {"add", OperationType::ADD},
-    {"subtract", OperationType::SUBTRACT},
-    {"multiply", OperationType::MULTIPLY},
-    {"multiplyscalar", OperationType::MULTIPLYSCALAR},
-    {"transpoze", OperationType::TRANSPOZE},
-    {"power", OperationType::POWER},
-    {"determinant", OperationType::DETERMINANT},
-    {"diagonal", OperationType::DIAGONAL},
-    {"sortrow", OperationType::SORTROW},
-    {"sortrows", OperationType::SORTROWS}
+unordered_map<string, Operation> str_op{
+    {"add", Operation::ADD},
+    {"subtract", Operation::SUBTRACT},
+    {"multiply", Operation::MULTIPLY},
+    {"multiplyscalar", Operation::MULTIPLYSCALAR},
+    {"transpoze", Operation::TRANSPOZE},
+    {"power", Operation::POWER},
+    {"determinant", Operation::DETERMINANT},
+    {"isdiagonal", Operation::DIAGONAL},
+    {"sortrow", Operation::SORTROW},
+    {"sortrows", Operation::SORTROWS}
 };
 
-unordered_map<OperationType, int> ops_args{
-    {OperationType::ADD, 2},
-    {OperationType::SUBTRACT, 2},
-    {OperationType::MULTIPLY, 4},
-    {OperationType::MULTIPLYSCALAR, 3},
-    {OperationType::TRANSPOZE, 2},
-    {OperationType::POWER, 3},
-    {OperationType::DETERMINANT, 2},
-    {OperationType::DIAGONAL, 2},
-    {OperationType::SORTROW, 3},
-    {OperationType::SORTROWS, 2}
+Operation get_operation(const string& op) {
+
+    try {
+
+        return str_op.at(op);
+
+    }catch(out_of_range& e) {
+
+        show_error(Reason::BADOPERATION);
+        return Operation::DUMMY;
+
+    }
+
+}
+
+unordered_map<Operation, int> op_args{
+    {Operation::ADD, 2},
+    {Operation::SUBTRACT, 2},
+    {Operation::MULTIPLY, 4},
+    {Operation::MULTIPLYSCALAR, 3},
+    {Operation::TRANSPOZE, 2},
+    {Operation::POWER, 3},
+    {Operation::DETERMINANT, 2},
+    {Operation::DIAGONAL, 2},
+    {Operation::SORTROW, 3},
+    {Operation::SORTROWS, 2}
 };
 
-enum class InputType {
-
-    NUMBER,
-    CHARACTER
-
+unordered_map<Operation, int> op_matnum{
+    {Operation::ADD, 2},
+    {Operation::SUBTRACT, 2},
+    {Operation::MULTIPLY, 2},
+    {Operation::MULTIPLYSCALAR, 1},
+    {Operation::TRANSPOZE, 1},
+    {Operation::POWER, 1},
+    {Operation::DETERMINANT, 1},
+    {Operation::DIAGONAL, 1},
+    {Operation::SORTROW, 1},
+    {Operation::SORTROWS, 1}
 };
 
 void show_help() {
@@ -95,54 +158,28 @@ Dostepne operacje:
     transpoze [rows] [cols]
     power [rows] [cols] [n]
     determinant [rows] [cols]
-    isDiagonal [rows] [cols]
+    isdiagonal [rows] [cols]
     sortRow [rows] [cols] [row index]
     sortRows [rows] [cols]
 )";
 
 }
 
-void show_error(Reason reason) {
-
-    switch(reason) {
-
-        case Reason::BADARG:
-            cout << "Podano zle argumenty!\n";
-            break;
-
-        case Reason::BADARGNUM:
-            cout << "Podano zla ilosc argumentow!\n";
-            break;
-
-        case Reason::BADOPERATION:
-            cout << "Podano zla operacje!\n";
-            break;
-
-        case Reason::BADTYPE:
-            cout << "Podano zly typ danych!\n";
-            break;
-
-    }
-
-    cout << "Wpisz ./matrixApp help aby otrzymac pomoc!" << endl;
-
-    exit(1);
-
-}
-
 template<typename T>
-T& validate_user_input(T& val) {
+T validate_user_input(int delimiter = ' ') {
+
+    T in;
 
     while(true) {
 
-        if(cin >> val) {
+        if(cin >> in) {
 
-            return val;
+            return in;
 
         }else {
 
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), delimiter);
 
         }
 
@@ -151,40 +188,65 @@ T& validate_user_input(T& val) {
 }
 
 template<typename T>
-T& user_input(T& val, const string& message) {
+T user_input(const string& message) {
 
     cout << message;
 
-    return validate_user_input(val);
+    return validate_user_input<T>();
 
 }
 
-bool check_args_num(OperationType type, int argc) {
+template<typename T>
+void user_input(const string& message, T* A, int n) {
 
-    auto iter = ops_args.find(type);
+    cout << message;
 
-    if(iter == ops_args.end())
-        show_error(Reason::BADARGNUM);
+    for(int i = 0; i < n; i++)
+        A[i] = validate_user_input<T>();
 
-    if(!(argc - 3 - iter->second))
-        return false;
-
-    return true;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 }
 
-vector<int> parse_args(OperationType type, int argc, char** argv) {
+template<typename T>
+T** inputMatrix(int rows, int cols) {
 
-    if(!check_args_num(type, argc)) show_error(Reason::BADARGNUM);
+    T **A = allocMatrix<T>(rows, cols);
 
-    vector<int> args;
+    for(int i = 0; i < rows; i++) {
+
+        ostringstream ss;
+        ss << "Wprowadz wartosci " << i << " wiersza macierzy (po spacji): ";
+
+        user_input<T>(ss.str(), A[i], cols);
+
+    }
+
+    cout << endl;
+
+    return A;
+
+}
+
+bool check_args_num(Operation op, int argc) {
+
+    return !(argc - 3 - op_args.at(op));
+
+}
+
+template<typename T>
+vector<T> parse_args(Operation op, int argc, char** argv) {
+
+    if(!check_args_num(op, argc)) show_error(Reason::BADARGNUM);
+
+    vector<T> args;
     args.resize(argc - 3);
 
     for(int i = 0; i < argc - 3; i++) {
 
         try {
 
-            args.push_back(stoi(argv[i + 3]));
+            if((args[i] = stod(argv[3 + i])) < 1) show_error(Reason::BADARG);
 
         }catch(...) {
 
@@ -198,67 +260,218 @@ vector<int> parse_args(OperationType type, int argc, char** argv) {
 
 }
 
-OperationType find_operation_type(const string& operation) {
+template<typename T>
+void operation(int argc, char** argv) {
 
-    auto iter = str_ops.find(operation);
+    Operation op = get_operation(string{argv[2]});
 
-    if(iter == str_ops.end())
-        show_error(Reason::BADOPERATION);
+    vector<T> args = parse_args<T>(op, argc, argv);
 
-    return iter->second;
+    const int rows = args.at(0), cols = args.at(1);
 
-}
+    if(op == Operation::POWER || op == Operation::DETERMINANT || op == Operation::DIAGONAL) {
 
-void int_operation(char** argv, int argc) {
+        if(cols != rows) {
 
-    OperationType type = find_operation_type(string{argv[2]});
+            cout << "Macierz musi byc kwadratowa!" << endl;
+            exit(1);
 
-    vector<int> args = parse_args(type, argc, argv);
+        }
 
-}
+    }else if(op == Operation::MULTIPLY) {
 
-void double_operation(char** argv, int argc) {
+        if(args.at(1) != args.at(2)) {
 
-    OperationType type = find_operation_type(string{argv[2]});
+            cout << "Macierz B musi mieć tyle samo wierszy co macierz A kolumn!" << endl;
+            exit(1);
 
-    vector<int> args = parse_args(type, argc, argv);
+        }
 
-    switch(type) {
+    }
 
-        case OperationType::ADD:
+    int n = op_matnum.at(op);
+
+    T ***M = new T**[n];
+
+    if(op != Operation::MULTIPLY) {
+
+        for(int i = 0; i < n; i++) {
+
+            M[i] = inputMatrix<T>(rows, cols);
+
+            ostringstream ss;
+            ss << "Macierz " << i << ":\n";
+
+            cout << ss.str();
+            showMatrix(M[i], rows, cols);
+            cout << '\n';
+
+        }
+
+    }
+
+    switch(op) {
+
+        case Operation::ADD:
+
+            {
+                T **out = addMatrix(M[0], M[1], rows, cols);
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(out, rows, cols);
+
+                deallocMatrix(out, rows);
+            }
+
+            break;
+
+        case Operation::SUBTRACT:
+
+            {
+                T **out = subtractMatrix(M[0], M[1], rows, cols);
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(out, rows, cols);
+
+                deallocMatrix(out, rows);
+            }
+
+            break;
+
+        case Operation::MULTIPLY:
+
+            {
+                const int rows2 = args.at(2), cols2 = args.at(3);
+
+                M[0] = inputMatrix<T>(rows, cols);
+
+                M[1] = inputMatrix<T>(rows2, cols2);
+
+                cout << "Macierz 1:\n";
+                showMatrix(M[0], rows, cols);
+                cout << '\n';
+
+                cout << "Macierz 2:\n";
+                showMatrix(M[1], rows2, cols2);
+                cout << '\n';
+
+                try {
+
+                    T **out = multiplyMatrix(M[0], M[1], rows, cols, cols2);
+
+                    cout << "Macierz wynikowa:\n";
+                    showMatrix(out, rows, cols2);
+
+                    deallocMatrix(out, rows);
+
+                }catch(const string& error) {
+
+                    cout << error << endl;
+
+                }
+
+            }
+
+            break;
+
+        case Operation::MULTIPLYSCALAR:
+
+            {
+                T **out = multiplyByScalar(M[0], rows, cols, args.at(2));
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(out, rows, cols);
+
+                deallocMatrix(out, rows);
+            }
+
+            break;
+
+        case Operation::TRANSPOZE:
+
+            {
+                T **out = transpozeMatrix(M[0], rows, cols);
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(out, rows, cols);
+
+                deallocMatrix(out, rows);
+            }
+
+            break;
+
+        case Operation::POWER:
+
+            {
+                T **out = powerMatrix(M[0], rows, cols, args.at(2));
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(out, rows, cols);
+
+                deallocMatrix(out, rows);
+            }
+
+            break;
+
+        case Operation::DETERMINANT:
+
+            {
+                cout << "Wyznacznik macierzy: " << determinantMatrix(M[0], rows, cols) << endl;
+            }
+
+            break;
+
+        case Operation::DIAGONAL:
+
+            {
+                cout << (matrixIsDiagonal(M[0], rows, cols) ? "Jest " : "Nie jest ") << "diagonalna." << endl;
+            }
+
+            break;
+
+        case Operation::SORTROW:
+
+            {
+                sortRow(M[0][(int)args.at(2)], cols);
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(M[0], rows, cols);
+            }
+
+            break;
+
+        case Operation::SORTROWS:
+
+            {
+                sortRowsInMatrix(M[0], rows, cols);
+
+                cout << "Macierz wynikowa:\n";
+                showMatrix(M[0], rows, cols);
+            }
 
             break;
 
     }
 
-}
-
-Type get_type(const string& type) {
-
-    if(type == "int") {
-
-        return Type::INT;
-
-    }else if(type == "double") {
-
-        return Type::DOUBLE;
-
-    }
-
-    show_error(Reason::BADTYPE);
+    for(int i = 0; i < n; i++)
+        deallocMatrix(M[i], args.at(0));
+    
+    delete[] M;
 
 }
 
-void validate_args(const int& argc, char** argv) {
+void validate_args(int argc, char** argv) {
+
+    if(argc < 3 || argc > 7) show_error(Reason::BADARGNUM);
 
     switch(get_type(string{argv[1]})) {
 
         case Type::INT:
-            int_operation(argv, argc);
+            operation<int>(argc, argv);
             break;
 
         case Type::DOUBLE:
-            double_operation(argv, argc);
+            operation<double>(argc, argv);
             break;
 
     }
@@ -274,17 +487,11 @@ int main(int argc, char **argv) {
         else
             show_error(Reason::BADARG);
 
-    }else if(argc >= 5 && argc <= 7) {
+    }else {
 
         validate_args(argc, argv);
 
-    }else {
-
-        show_error(Reason::BADARGNUM);
-
     }
-
-    if(err) return 1;
 
     return 0;
 

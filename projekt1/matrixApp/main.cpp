@@ -12,7 +12,6 @@ Typy:
     double - dzialania na typach double
 
 Dzialania:
-ilosc 3, pozycja 2
 add [rows] [cols]
 subtract [rows] [cols]
 multiply [rows] [cols] [rows] [cols]

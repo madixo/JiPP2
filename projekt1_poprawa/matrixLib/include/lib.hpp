@@ -1,67 +1,34 @@
 #ifndef MATRIX_LIB_HPP
 #define MATRIX_LIB_HPP
-// matrixApp int add 5 5
-/**
- * @brief Alokuje pamięć na macierz typu int
- * o rozmiarze rows x cols
- * po zakończeniu korzystania z macierzy,
- * należy na niej wywołać funkcję deallocMatrix
- * 
- * @param rows ilość wierszy
- * @param cols ilość kolumn
- * @return macierz typu int
- */
-int** allocIntMatrix(int rows, int cols);
 
 /**
- * @brief Alokuje pamięć na macierz typu double
+ * @brief Alokuje pamięć na macierz typu T
  * o rozmiarze rows x cols
- * po zakończeniu korzystania z macierzy,
+ * po zakończeniu korzystania z macierzy
  * należy na niej wywołać funkcję deallocMatrix
  * 
+ * @tparam T typ danych macierzy
  * @param rows ilość wierszy
  * @param cols ilość kolumn
- * @return macierz typu double
+ * @return T** macierz typu T
  */
-double** allocDoubleMatrix(int rows, int cols);
+template<typename T> T** allocMatrix(int rows, int cols);
 
 /**
  * @brief Usuwa z pamięci macierz typu int
  * 
- * @param A macierz
- * @param rows ilość wierszy
- */
-void deallocMatrix(int **A, int rows);
-
-/**
- * @brief Usuwa z pamięci macierz typu double
- * 
- * @param A macierz
- * @param rows ilość wierszy
- */
-void deallocMatrix(double **A, int rows);
-
-/**
- * @brief Tworzy macierz jednostkową typu int
- * po zakończeniu korzystania z macierzy,
- * należy na niej wywołać funkcję deallocMatrix
- * 
+ * @param A macierz 
  * @param rows ilość wierszy
- * @param cols ilość kolumn
- * @return macierz jednostkowa typu int
  */
-int** identityIntMatrix(int rows, int cols);
+void deallocMatrix(int** A, int rows);
 
 /**
- * @brief Tworzy macierz jednostkową typu double
- * po zakończeniu korzystania z macierzy,
- * należy na niej wywołać funkcję deallocMatrix
+ * @brief Usuwa z pamięci macierz typu int
  * 
+ * @param A macierz 
  * @param rows ilość wierszy
- * @param cols ilość kolumn
- * @return macierz jednostkowa typu double
  */
-double** identityDoubleMatrix(int rows, int cols);
+void deallocMatrix(double** A, int rows);
 
 /**
  * @brief Wyświetla macierz typu int
@@ -70,7 +37,7 @@ double** identityDoubleMatrix(int rows, int cols);
  * @param rows ilość wierszy
  * @param cols ilość kolumn
  */
-void showMatrix(int **A, int rows, int cols);
+void showMatrix(int** A, int rows, int cols);
 
 /**
  * @brief Wyświetla macierz typu double
@@ -79,29 +46,7 @@ void showMatrix(int **A, int rows, int cols);
  * @param rows ilość wierszy
  * @param cols ilość kolumn
  */
-void showMatrix(double **A, int rows, int cols);
-
-/**
- * @brief Wczytuje macierz typu int od użytkownika
- * po zakończeniu korzystania z macierzy,
- * należy na niej wywołać funkcję deallocMatrix
- * 
- * @param rows ilość wierszy
- * @param cols ilość kolumn
- * @return macierz podana przez użytkownika
- */
-int** inputIntMatrix(int rows, int cols);
-
-/**
- * @brief Wczytuje macierz typu double od użytkownika
- * po zakończeniu korzystania z macierzy,
- * należy na niej wywołać funkcję deallocMatrix
- * 
- * @param rows ilość wierszy
- * @param cols ilość kolumn
- * @return macierz podana przez użytkownika
- */
-double** inputDoubleMatrix(int rows, int cols);
+void showMatrix(double** A, int rows, int cols);
 
 /**
  * @brief Dodaje ze sobą macierz A i macierz B typu int
@@ -114,7 +59,7 @@ double** inputDoubleMatrix(int rows, int cols);
  * @param cols ilość kolumn
  * @return macierz wynikowa typu int
  */
-int** addMatrix(int **A, int **B, int rows, int cols);
+int** addMatrix(int** A, int** B, int rows, int cols);
 
 /**
  * @brief Dodaje ze sobą macierz A i macierz B typu double
@@ -127,7 +72,7 @@ int** addMatrix(int **A, int **B, int rows, int cols);
  * @param cols ilość kolumn
  * @return macierz wynikowa typu double
  */
-double** addMatrix(double **A, double **B, int rows, int cols);
+double** addMatrix(double** A, double** B, int rows, int cols);
 
 /**
  * @brief Odejmuje od macierzy A macierz B typu int
@@ -140,7 +85,7 @@ double** addMatrix(double **A, double **B, int rows, int cols);
  * @param cols ilość kolumn
  * @return macierz wynikowa typu int
  */
-int** subtractMatrix(int **A, int **B, int rows, int cols);
+int** subtractMatrix(int** A, int** B, int rows, int cols);
 
 /**
  * @brief Odejmuje od macierzy A macierz B typu double
@@ -153,7 +98,7 @@ int** subtractMatrix(int **A, int **B, int rows, int cols);
  * @param cols ilość kolumn
  * @return macierz wynikowa typu double
  */
-double** subtractMatrix(double **A, double **B, int rows, int cols);
+double** subtractMatrix(double** A, double** B, int rows, int cols);
 
 /**
  * @brief Mnoży ze sobą macierze A i B (AxB) typu int
@@ -167,7 +112,7 @@ double** subtractMatrix(double **A, double **B, int rows, int cols);
  * @param colsB ilość kolumn macierzy B
  * @return macierz wynikowa typu int
  */
-int** multiplyMatrix(int **A, int **B, int rowsA, int colsA, int colsB);
+int** multiplyMatrix(int** A, int** B, int rowsA, int colsA, int colsB);
 
 /**
  * @brief Mnoży ze sobą macierze A i B (AxB) typu double
@@ -181,7 +126,7 @@ int** multiplyMatrix(int **A, int **B, int rowsA, int colsA, int colsB);
  * @param colsB ilość kolumn macierzy B
  * @return macierz wynikowa typu double
  */
-double** multiplyMatrix(double **A, double **B, int rowsA, int colsA, int colsB);
+double** multiplyMatrix(double** A, double** B, int rowsA, int colsA, int colsB);
 
 /**
  * @brief Mnoży macierz A ze skalarem x typu int
@@ -193,7 +138,7 @@ double** multiplyMatrix(double **A, double **B, int rowsA, int colsA, int colsB)
  * @param x skalar x
  * @return macierz wynikowa typu int
  */
-int** multiplyByScalar(int **A, int rows, int cols, int x);
+int** multiplyByScalar(int** A, int rows, int cols, int x);
 
 /**
  * @brief Mnoży macierz A ze skalarem x typu double
@@ -205,7 +150,7 @@ int** multiplyByScalar(int **A, int rows, int cols, int x);
  * @param x skalar x
  * @return macierz wynikowa typu double
  */
-double** multiplyByScalar(double **A, int rows, int cols, double x);
+double** multiplyByScalar(double** A, int rows, int cols, double x);
 
 /**
  * @brief Transponuje macierz A typu int
@@ -217,7 +162,7 @@ double** multiplyByScalar(double **A, int rows, int cols, double x);
  * @param cols ilość kolumn
  * @return ztransponowana macierz typu int
  */
-int** transpozeMatrix(int **A, int rows, int cols);
+int** transpozeMatrix(int** A, int rows, int cols);
 
 /**
  * @brief Transponuje macierz A typu double
@@ -229,7 +174,7 @@ int** transpozeMatrix(int **A, int rows, int cols);
  * @param cols ilość kolumn
  * @return ztransponowana macierz typu double
  */
-double** transpozeMatrix(double **A, int rows, int cols);
+double** transpozeMatrix(double** A, int rows, int cols);
 
 /**
  * @brief Podnosi macierz A do potęgi n typu int
@@ -242,7 +187,7 @@ double** transpozeMatrix(double **A, int rows, int cols);
  * @param n potęga n
  * @return macierz wynikowa typu int
  */
-int** powerMatrix(int **A, int rows, int cols, unsigned int n);
+int** powerMatrix(int** A, int rows, int cols, unsigned int n);
 
 /**
  * @brief Podnosi macierz A do potęgi n typu double
@@ -255,7 +200,7 @@ int** powerMatrix(int **A, int rows, int cols, unsigned int n);
  * @param n potęga n
  * @return macierz wynikowa typu double
  */
-double** powerMatrix(double **A, int rows, int cols, unsigned int n);
+double** powerMatrix(double** A, int rows, int cols, unsigned int n);
 
 /**
  * @brief Oblicza wyznacznik macierzy A typu int
@@ -265,7 +210,7 @@ double** powerMatrix(double **A, int rows, int cols, unsigned int n);
  * @param cols ilość kolumn
  * @return wyznacznik macierzy A
  */
-int determinantMatrix(int **A, int rows, int cols);
+int determinantMatrix(int** A, int rows, int cols);
 
 /**
  * @brief Oblicza wyznacznik macierzy A typu double
@@ -275,7 +220,7 @@ int determinantMatrix(int **A, int rows, int cols);
  * @param cols ilość kolumn
  * @return wyznacznik macierzy A
  */
-double determinantMatrix(double **A, int rows, int cols);
+double determinantMatrix(double** A, int rows, int cols);
 
 /**
  * @brief Sprawdza czy macierz typu int jest diagonalna
@@ -285,7 +230,7 @@ double determinantMatrix(double **A, int rows, int cols);
  * @param cols ilość kolumn
  * @return true - macierz diagonalna, false - macierz niediagonalna
  */
-bool matrixIsDiagonal(int **A, int rows, int cols);
+bool matrixIsDiagonal(int** A, int rows, int cols);
 
 /**
  * @brief Sprawdza czy macierz typu double jest diagonalna
@@ -295,7 +240,7 @@ bool matrixIsDiagonal(int **A, int rows, int cols);
  * @param cols ilość kolumn
  * @return true - macierz diagonalna, false - macierz niediagonalna
  */
-bool matrixIsDiagonal(double **A, int rows, int cols);
+bool matrixIsDiagonal(double** A, int rows, int cols);
 
 /**
  * @brief Zamienia wartość zmiennej a z wartością zmiennej b typu int
@@ -303,7 +248,7 @@ bool matrixIsDiagonal(double **A, int rows, int cols);
  * @param a zmienna a
  * @param b zmienna b
  */
-void swap(int &a, int &b);
+void swap(int& a, int& b);
 
 /**
  * @brief Zamienia wartość zmiennej a z wartością zmiennej b typu double
@@ -311,7 +256,7 @@ void swap(int &a, int &b);
  * @param a zmienna a
  * @param b zmienna b
  */
-void swap(double &a, double &b);
+void swap(double& a, double& b);
 
 /**
  * @brief Sortuje wiersz a macierzy typu int rosnąco
@@ -320,7 +265,7 @@ void swap(double &a, double &b);
  * @param n ilosc liczb w wierszu
  * @return posortowany wiersz a
  */
-int* sortRow(int *a, int n);
+int* sortRow(int* a, int n);
 
 /**
  * @brief Sortuje wiersz a macierzy typu double rosnąco
@@ -329,7 +274,7 @@ int* sortRow(int *a, int n);
  * @param n ilosc liczb w wierszu
  * @return posortowany wiersz a
  */
-double* sortRow(double *a, int n);
+double* sortRow(double* a, int n);
 
 /**
  * @brief Sortuje wiersze w macierzy A typu int rosnąco
@@ -339,7 +284,7 @@ double* sortRow(double *a, int n);
  * @param cols ilość kolumn
  * @return macierz A z posortowanymi wierszami
  */
-int** sortRowsInMatrix(int **A, int rows, int cols);
+int** sortRowsInMatrix(int** A, int rows, int cols);
 
 /**
  * @brief Sortuje wiersze w macierzy A typu double rosnąco
@@ -349,6 +294,6 @@ int** sortRowsInMatrix(int **A, int rows, int cols);
  * @param cols ilość kolumn
  * @return macierz A z posortowanymi wierszami
  */
-double** sortRowsInMatrix(double **A, int rows, int cols);
+double** sortRowsInMatrix(double** A, int rows, int cols);
 
 #endif // MATRIX_LIB_HPP
