@@ -11,10 +11,12 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/thirdparty/SQLiteCpp)
+
 file(GLOB CPPFILES src/*.cpp)
 
 add_executable(projektKoncowy ${CPPFILES})
 
 include_directories(include)
 
-target_link_libraries(projektKoncowy ${GTKMM_LIBRARIES})
+target_link_libraries(projektKoncowy ${GTKMM_LIBRARIES} SQLiteCpp sqlite3 pthread dl)

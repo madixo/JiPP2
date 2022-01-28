@@ -1,6 +1,9 @@
 #include <gtkmm-4.0/gtkmm.h>
-    
+
+#include "Biblioteka.hpp"
+
 #include <iostream>
+
 using namespace std;
 
 class MyWindow : public Gtk::Window {
@@ -23,6 +26,8 @@ class MyWindow : public Gtk::Window {
 };
 
 int main(int argc, char* argv[]) {
+
+    Biblioteka b{};
 
     auto app = Gtk::Application::create("me.madix.test");
 
